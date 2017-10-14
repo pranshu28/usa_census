@@ -39,30 +39,30 @@ for i in range(df.shape[1]):
     if header[i] in continuous:
         dist = df[header[i]].sort_values()
         plot_(j, 'values', header[i], header[i])
-        dist.plot.box()
+        dist.plot.hist(bins=20)
         # plt.plot(range(df.shape[0]), dist, linestyle='-', linewidth=2)
         # print(df[header[i]].describe())
         plt.figtext(1, 0.4, df[header[i]].describe())
-    else:
-        dist = df[header[i]].value_counts(sort=False)
-        # print(dist.index.tolist())
-        miss = [' Not in universe', ' ?', ' Not in universe or children', ' Not in universe under 1 year old']
-        m = 0
-        for k in miss:
-            if k in dist.index.tolist():
-                # print(dist[' Not in universe'])
-                m = +dist[k]
-                dist = dist.drop(k)
-        # print(dist)
-        dist = dist * 100. / df.shape[0]
-        plot_(j, 'values', 'Percentage', header[i])
-        if df[header[i]].dtype == 'int64':
-            df[header[i]].hist(bins=50)
-        else:
-            dist.plot.bar()
-        plt.figtext(0.3, 1, 'Missing values: ' + str(m) + ' (' + str(m * 100. / df.shape[0]) + ' % )')
-        #
-    plt.savefig('pics/' + header[i] + '.png', bbox_inches='tight')
-    j += 1
+    # else:
+    #     dist = df[header[i]].value_counts(sort=False)
+    #     # print(dist.index.tolist())
+    #     miss = [' Not in universe', ' ?', ' Not in universe or children', ' Not in universe under 1 year old']
+    #     m = 0
+    #     for k in miss:
+    #         if k in dist.index.tolist():
+    #             # print(dist[' Not in universe'])
+    #             m = +dist[k]
+    #             dist = dist.drop(k)
+    #     # print(dist)
+    #     dist = dist * 100. / df.shape[0]
+    #     plot_(j, 'values', 'Percentage', header[i])
+    #     if df[header[i]].dtype == 'int64':
+    #         df[header[i]].hist(bins=50)
+    #     else:
+    #         dist.plot.bar()
+    #     plt.figtext(0.3, 1, 'Missing values: ' + str(m) + ' (' + str(m * 100. / df.shape[0]) + ' % )')
+    #     #
+        plt.savefig('pics/' + header[i] + '-hist.png', bbox_inches='tight')
+        j += 1
     # print("\n\n")
 # plt.show()
