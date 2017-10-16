@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import matplotlib.pylab as plt
 
@@ -29,7 +28,6 @@ def plot_(fig, l1, l2, t):
     plt.xlabel(l1)
     plt.ylabel(l2)
     plt.title(t)
-    plt.legend(loc='best')
 
 
 j = 0
@@ -40,29 +38,23 @@ for i in range(df.shape[1]):
         dist = df[header[i]].sort_values()
         plot_(j, 'values', header[i], header[i])
         dist.plot.hist(bins=20)
-        # plt.plot(range(df.shape[0]), dist, linestyle='-', linewidth=2)
-        # print(df[header[i]].describe())
         plt.figtext(1, 0.4, df[header[i]].describe())
-    # else:
-    #     dist = df[header[i]].value_counts(sort=False)
-    #     # print(dist.index.tolist())
-    #     miss = [' Not in universe', ' ?', ' Not in universe or children', ' Not in universe under 1 year old']
-    #     m = 0
-    #     for k in miss:
-    #         if k in dist.index.tolist():
-    #             # print(dist[' Not in universe'])
-    #             m = +dist[k]
-    #             dist = dist.drop(k)
-    #     # print(dist)
-    #     dist = dist * 100. / df.shape[0]
-    #     plot_(j, 'values', 'Percentage', header[i])
-    #     if df[header[i]].dtype == 'int64':
-    #         df[header[i]].hist(bins=50)
-    #     else:
-    #         dist.plot.bar()
-    #     plt.figtext(0.3, 1, 'Missing values: ' + str(m) + ' (' + str(m * 100. / df.shape[0]) + ' % )')
-    #     #
-        plt.savefig('pics/' + header[i] + '-hist.png', bbox_inches='tight')
-        j += 1
-    # print("\n\n")
+    else:
+        dist = df[header[i]].value_counts(sort=False)
+        miss = [' Not in universe', ' ?', ' Not in universe or children', ' Not in universe under 1 year old']
+        m = 0
+        for k in miss:
+            if k in dist.index.tolist():
+                m = +dist[k]
+                dist = dist.drop(k)
+        dist = dist * 100. / df.shape[0]
+        if df[header[i]].dtype == 'int64':
+            plot_(j, 'categories', 'Frequency', header[i])
+            df[header[i]].hist(bins=50)
+        else:
+            plot_(j, 'categories', 'Percentage', header[i])
+            dist.plot.bar()
+        plt.figtext(0.3, 1, 'Missing values: ' + str(m) + ' (' + str(m * 100. / df.shape[0]) + ' % )')
+    plt.savefig('pics/' + header[i] + '.png', bbox_inches='tight')
+    j += 1
 # plt.show()
